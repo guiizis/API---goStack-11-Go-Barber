@@ -18,20 +18,18 @@ appointRouter.get("/", async (req, res) => {
 )
 
 appointRouter.post("/", async (req, res) => {
-  try {
-    const newCreateAppointmentService = new createAppointmentService()
 
-    const { provider_id, date } = req.body
+  const newCreateAppointmentService = new createAppointmentService()
 
-    const parseDate = parseISO(date)
+  const { provider_id, date } = req.body
 
-    const newApointment = await newCreateAppointmentService.execute({ provider_id, date: parseDate })
+  const parseDate = parseISO(date)
 
-    return res.status(201).json(newApointment)
+  const newApointment = await newCreateAppointmentService.execute({ provider_id, date: parseDate })
 
-  } catch (e) {
-    return res.status(400).json({ message: e.message })
-  }
+  return res.status(201).json(newApointment)
+
+
 })
 
 export default appointRouter

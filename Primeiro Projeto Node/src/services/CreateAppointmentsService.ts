@@ -1,5 +1,6 @@
 import { startOfHour } from 'date-fns'
 import { getCustomRepository } from "typeorm"
+import appError from '../errors/appError'
 import AppointmentModel from "../models/Appointment"
 import AppointmentRepository from "../repositories/AppointmentRepository"
 
@@ -18,7 +19,7 @@ class createAppointmentService {
     const findAppointmentInTheSameTime = await appointmentRepositoryInstance.findByDate(appointmentHour)
 
     if (findAppointmentInTheSameTime) {
-      throw new Error("The Instace of this Data  Already Exist !")
+      throw new appError("The Instace of this Data  Already Exist !")
     }
 
     const createdAppointment = appointmentRepositoryInstance.create({ //criando instancia para ser salva no BD

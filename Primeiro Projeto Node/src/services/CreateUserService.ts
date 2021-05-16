@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm"
 import { hash } from "bcryptjs"
 import createUser from "../models/Users"
+import appError from "../errors/appError"
 
 interface ICreateUser {
   email: string,
@@ -15,7 +16,7 @@ class createUserService {
     const emailAlreadyUser = await userRepository.findOne({ where: { email } })
 
     if (emailAlreadyUser) {
-      throw new Error("This Email is Already in Use")
+      throw new appError("This Email is Already in Use")
     }
     const hashedPassword = await hash(password, 8)
     const createNewUser = userRepository.create({ email, name, password: hashedPassword }) //criando instancia para salvar novo objeto

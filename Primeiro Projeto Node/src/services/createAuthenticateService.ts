@@ -4,6 +4,7 @@ import { getRepository } from "typeorm"
 import { compare } from "bcryptjs"
 import { sign } from "jsonwebtoken"
 import { JWTConfig } from "../config/auth"
+import appError from "../errors/appError"
 
 interface ICreateAuthenticateProps {
   email: string
@@ -22,12 +23,12 @@ class createAuthenticateService {
     const isUserValid = await userRepository.findOne({ where: { email } })
 
     if (!isUserValid) {
-      throw new Error("The Email or the Password is Invalid")
+      throw new appError("The Email or the Password is Invalid")
     }
     const isPasswordValid = await compare(password, isUserValid.password)
 
     if (!isPasswordValid) {
-      throw new Error("The Email or the Password is Invalid")
+      throw new appError("The Email or the Password is Invalid")
     }
 
     const { secret, authExpireLimit } = JWTConfig
